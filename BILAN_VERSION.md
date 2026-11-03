@@ -22,6 +22,7 @@ Le logo original associe un livre et une onde sonore. Il est intégré dans l’
 - Support conservé dans le navigateur avant la capture, puis envoyé ; ajout d’un second support pendant la capture et reprise après un échec d’envoi simulé.
 - Titre automatique, conservation du titre manuel, lecture de la fin d’un support long, rejet des références inconnues et de chiffres absents des preuves, maintien d’un chapitre déjà rédigé après interruption.
 - Quiz, mots clés et cartes d’un cours en anglais validés avec conservation des citations originales.
+- Enrichissement réel avec recherches publiques sur un cours fictif : cours approfondi, deux sources consultables et trois QCM validés en 152 secondes.
 - Génération avec le véritable modèle local sur des sources fictives courtes : un titre, deux chapitres, références orales et écrites, quatre QCM validés et cartes mémoire.
 
 Le premier essai libre avait inventé des exemples chiffrés et des méthodes. La rédaction utilise désormais des extraits identifiés, un filtre des chiffres et une vérification séparée par l’IA, avec tentative de correction d’une partie refusée.
@@ -50,7 +51,7 @@ Le navigateur doit rester ouvert et le Mac éveillé. Une fermeture ou une panne
 
 ### Ce n’est pas encore un service public hébergé
 
-L’application actuelle est locale, destinée à macOS Apple Silicon. Elle n’a ni comptes utilisateurs, ni synchronisation entre appareils, ni hébergement multiutilisateur. L’archive de sources est préparée pour GitHub et exclut les cours, audios, modèles et données privées. Aucun dépôt distant n’a été publié. La restauration automatique d’un ZIP de cours reste à construire.
+L’application actuelle est locale, destinée à macOS Apple Silicon. Elle n’a ni comptes utilisateurs, ni synchronisation entre appareils, ni hébergement multiutilisateur. L’archive de sources est préparée pour GitHub et exclut les cours, audios, modèles et données privées. Le code est publié sur https://github.com/HASSAIM/StudyHUB ; cela ne met pas l’application en ligne. La restauration automatique d’un ZIP de cours reste à construire.
 
 ## Recherche encyclopédique : limites
 

@@ -107,13 +107,15 @@ npm run test:ui
 
 Le test d’interface utilise des cours fictifs et un son artificiel. Il vérifie l’affichage ordinateur/mobile, la navigation, la recherche, la capture sans micro, la pause/reprise, les morceaux sauvegardés, l’absence de piste audio et la coupure de la source. Il couvre aussi les supports joints avant et pendant la capture, la reprise d’envoi, la personnalisation des quiz, le logo et la lecture des références. Il ne valide pas les permissions macOS ni une réunion Teams réelle.
 
-## Préparer une publication sur GitHub
+## Dépôt GitHub et données privées
 
 Créer le dépôt **à partir du dossier `cours-local/` uniquement**. Ne pas publier le dossier parent du projet ISC, ses références ou sa bibliothèque de cours.
 
 Le `.gitignore` exclut les cours et audios (`sessions/`), modèles, environnement Python, applications compilées, journaux, fichiers `.env`, sauvegardes de développement, résultats et captures de test. Le code du lanceur compilé contient un ancien chemin absolu : l’installation portable utilise `launch.py` ou `Lancer.command`.
 
-Avant publication, inspecter les fichiers sélectionnés et choisir une licence. La publication distante nécessite un compte GitHub connecté. Les données de cours ne font pas partie du dépôt.
+Dépôt public : https://github.com/HASSAIM/StudyHUB. Les données de cours ne font pas partie du dépôt. Aucune licence de réutilisation du code n’a encore été choisie. Publier le code ne fournit pas un site hébergé : l’application se lance localement.
+
+Après un téléchargement des sources, si macOS refuse l’ouverture du lanceur faute de droit d’exécution, utiliser `chmod +x Lancer.command`, puis le lancer, ou exécuter `python3 launch.py` après installation des dépendances.
 
 ## Identité visuelle
 
