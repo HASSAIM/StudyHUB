@@ -1,0 +1,25 @@
+.venv/
+model/
+notes-model/
+runtime.log
+sessions/
+__pycache__/
+.DS_Store
+.env
+.env.*
+!.env.example
+*.log
+*.app/
+versions/
+test-results/
+apercu*.png
+verification-*.json
+node_modules/
+playwright-report/
+# Ancien lanceur compilé propre à ce Mac
+launcher.c
+assets/*.iconset/
+
+# Scripts des anciennes versions, conservés localement
+check_notes.py
+notes.py

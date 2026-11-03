@@ -1,0 +1,7 @@
+{
+  "name": "studyhub-local",
+  "version": "5.0.0",
+  "private": true,
+  "scripts": { "test:ui": "node tests/interface.cjs" },
+  "devDependencies": { "playwright": "1.62.1" }
+}

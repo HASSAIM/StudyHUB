@@ -1,0 +1,8 @@
+faster-whisper==1.2.1
+av==16.1.0
+mlx-lm==0.32.0
+pypdf==6.20.0
+python-pptx==1.0.2
+filelock==4.0.12
+huggingface-hub==1.33.0
+imageio-ffmpeg==0.6.0
