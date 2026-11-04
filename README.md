@@ -8,7 +8,7 @@ Ouvrir **Cours ISC.app** sur le Bureau, ou lancer `Lancer.command`. Le lanceur i
 
 - **Accueil** : cours récents, minutes enregistrées, cartes à revoir et récupération des séances interrompues.
 - **Mes cours** : recherche et filtre par matière.
-- **Enregistrer** : choisir la source, vérifier le son et démarrer. Le nom, la matière, la langue et le vocabulaire sont des options repliées.
+- **Enregistrer** : nom du cours, langue, Teams ou salle, puis un seul bouton pour démarrer. Les réglages audio et les supports restent facultatifs et repliés.
 - **Réviser** : résultats des quiz, erreurs et cartes à revoir.
 - **Sauvegardes** : export ZIP des données.
 
@@ -17,8 +17,8 @@ Ouvrir **Cours ISC.app** sur le Bureau, ou lancer `Lancer.command`. Le lanceur i
 1. Utiliser un navigateur capable de partager l’audio, par exemple Chrome ou Edge. Safari peut ne pas fournir de piste audio pour le partage.
 2. Ouvrir de préférence Teams dans un onglet de ce navigateur.
 3. Choisir **Teams / cours en ligne · son partagé uniquement**.
-4. Cliquer sur **Vérifier la source audio**, sélectionner le cours et activer le partage du son. Faire jouer la voix du cours.
-5. Un extrait de six secondes permet de réécouter la source. Vérifier également le niveau sonore, puis démarrer.
+4. Cliquer sur **Enregistrer**, sélectionner l’onglet du cours et activer **Partager le son**.
+5. L’enregistrement démarre directement. Le niveau sonore reste visible pendant le cours ; un test de six secondes reste disponible dans **Options audio**, sans être obligatoire.
 
 Ce mode n’ouvre pas le microphone. Le partage de son d’une application native, d’une fenêtre ou de tout le Mac dépend des possibilités du navigateur et de macOS : la présence d’un écran partagé ne prouve pas que son audio est disponible. Aucun contournement par le micro n’est appliqué si la source audio manque.
 
