@@ -60,3 +60,6 @@ Cette intégration lit des articles de Wikipédia après une recherche de notion
 ## Exemples chiffrés
 
 L’application calcule les opérations élémentaires des exemples structurés à partir des données et expressions fournies. Un résultat numérique annoncé à la main par le modèle n’est pas utilisé. Les expressions ne peuvent exécuter aucun programme. Cela réduit les erreurs de calcul, mais ne garantit pas que la formule, les hypothèses ou l’interprétation proposées sont adaptées à la question.
+
+
+Capture Safari native : test reel court valide le 4 novembre, WAV mono 48 kHz, echantillons non nuls, aucune sortie video ni microphone. Correction du tampon CoreMedia de taille insuffisante (-12737). La distribution ad hoc reste experimentale et un cours Teams long reste a valider.

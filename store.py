@@ -16,6 +16,7 @@ def read(sid):
             m=re.match(r'\[(\d+):(\d+)\]\s*(.*)',line)
             if m: s['segments'].append({'start':int(m[1])*60+int(m[2]),'text':m[3]})
     s['audio_available']=(folder(sid)/'audio').exists() or bool(list((folder(sid)/'chunks').glob('*.chunk')))
+    if s.get('native_audio') and (folder(sid)/'audio').exists() and (folder(sid)/'audio').stat().st_size<=44:s['audio_available']=False
     return s
 def update(sid,**fields):
     p=folder(sid)

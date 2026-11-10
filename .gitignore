@@ -23,3 +23,5 @@ assets/*.iconset/
 # Scripts des anciennes versions, conservés localement
 check_notes.py
 notes.py
+
+native-build/

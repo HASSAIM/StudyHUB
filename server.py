@@ -64,13 +64,17 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         path=urlparse(self.path).path
         if not self.host_ok():return self.reply({'error':'Accès refusé'},403)
-        if path=='/health':return self.reply({'app':'isc-cours-local','ready':True,'version':5})
+        if path=='/health':return self.reply({'app':'isc-cours-local','ready':True,'version':6})
         if path=='/':
             data=(ROOT/'index.html').read_text().replace('__TOKEN__',TOKEN).encode();self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8');self.send_header('Cache-Control','no-store');self.send_header('Referrer-Policy','no-referrer');self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data);return
         if path in ('/assets/studyhub-logo.png','/assets/favicon.png'):
             return self.stream(ROOT/path.lstrip('/'),'image/png')
         if not self.authorized():return self.reply({'error':'Recharge la page pour te reconnecter'},403)
         try:
+            if path.startswith('/api/native/status/'):
+                import native_audio
+                sid=path.rsplit('/',1)[1];native_audio.heartbeat(sid)
+                return self.reply(native_audio.status(sid))
             if path=='/api/sessions':return self.reply(listing())
             if path=='/api/storage':return self.reply({'path':str(DATA),'bytes':sum(p.stat().st_size for p in DATA.rglob('*') if p.is_file()),'free':shutil.disk_usage(DATA).free})
             if path=='/api/backup':
@@ -88,7 +92,7 @@ class Handler(BaseHTTPRequestHandler):
                 if parts[4]=='audio':
                     p=folder(sid)/'audio'
                     if not p.exists():p=assemble(sid)
-                    return self.stream(p,s.get('mime','application/octet-stream'),'cours.'+('m4a' if 'mp4' in s.get('mime','') else 'webm'))
+                    return self.stream(p,s.get('mime','application/octet-stream'),'cours.'+('wav' if s.get('mime')=='audio/wav' else 'm4a' if 'mp4' in s.get('mime','') else 'webm'))
             return self.reply({'error':'Introuvable'},404)
         except (ValueError,OSError) as e:return self.reply({'error':str(e)},400)
         except (BrokenPipeError,ConnectionResetError):pass
@@ -96,6 +100,14 @@ class Handler(BaseHTTPRequestHandler):
         if not self.authorized() or self.headers.get('Origin') not in ('http://127.0.0.1:8765','http://localhost:8765'):return self.reply({'error':'Accès refusé'},403)
         parsed=urlparse(self.path);q=parse_qs(parsed.query);path=parsed.path
         try:
+            if path=='/api/native/start':
+                import native_audio
+                b=self.body();s=create(b.get('title'),b.get('language','fr'),b.get('subject',''),'audio/wav')
+                try:
+                    update(s['id'],vocabulary=str(b.get('vocabulary',''))[:500],enrichment_enabled=bool(b.get('enrichment_enabled',True)),research_enabled=bool(b.get('research_enabled',True)))
+                    native_audio.start(s['id']);return self.reply(read(s['id']))
+                except Exception as e:
+                    update(s['id'],status='error',error=str(e));raise
             if path=='/api/start':
                 b=self.body();s=create(b.get('title'),b.get('language','auto'),b.get('subject',''),b.get('mime','audio/webm'));return self.reply(update(s['id'],source=b.get('source','unknown'),vocabulary=str(b.get('vocabulary',''))[:500],enrichment_enabled=bool(b.get('enrichment_enabled',True)),research_enabled=bool(b.get('research_enabled',True))))
             if path=='/api/import':
@@ -184,7 +196,14 @@ class Handler(BaseHTTPRequestHandler):
                     result=update(sid,supports=supports,course_needs_refresh=bool(s.get('notes',{}).get('course')))
                     (folder(sid)/document['file']).unlink(missing_ok=True)
                     return self.reply(result)
+            if path=='/api/native/control':
+                import native_audio
+                return self.reply(native_audio.stop(sid) if b.get('action')=='stop' else native_audio.control(sid,b.get('action')))
             if path=='/api/finalize':
+                if s.get('native_audio'):
+                    import native_audio
+                    native_audio.stop(sid)
+                    if not (folder(sid)/'audio').exists() or (folder(sid)/'audio').stat().st_size<=44:raise ValueError('Aucun son sauvegardé. Vérifie les autorisations audio du Mac et réessaie.')
                 from filelock import FileLock
                 with FileLock(str(folder(sid)/'chunk.lock')):
                     assemble(sid);update(sid,status='saved')
@@ -226,10 +245,14 @@ class Handler(BaseHTTPRequestHandler):
 if __name__=='__main__':
     resume=[]
     for s in listing():
-        if s['status'] in ('recording','interrupted'):update(s['id'],status='interrupted')
+        if s['status'] in ('recording','interrupted'):
+            if s.get('native_audio'):
+                import native_audio
+                native_audio.control(s['id'],'stop')
+            update(s['id'],status='interrupted')
         elif s['status'] in BUSY:
             action=s.get('pending_action') or ('analyze' if s.get('transcript') else 'transcribe');update(s['id'],status='saved');resume.append((s['id'],action,s.get('pending_input')))
-    print('StudyHUB v5 : http://127.0.0.1:8765',flush=True)
+    print('StudyHUB v6 : http://127.0.0.1:8765',flush=True)
     server=ThreadingHTTPServer(('127.0.0.1',8765),Handler)
     for sid,action,extra in resume:enqueue(sid,action,extra)
     server.serve_forever()

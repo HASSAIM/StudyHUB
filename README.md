@@ -14,10 +14,10 @@ Ouvrir **Cours ISC.app** sur le Bureau, ou lancer `Lancer.command`. Le lanceur i
 
 ## Enregistrer un cours Teams
 
-1. Utiliser un navigateur capable de partager l’audio, par exemple Chrome ou Edge. Safari peut ne pas fournir de piste audio pour le partage.
+1. Dans Safari sur Mac, StudyHUB utilise désormais un composant local « StudyHUB Audio » pour capter directement le son du Mac. Autoriser ce composant dans Réglages Système → Confidentialité et sécurité → Enregistrement de l’écran et des sons du système. La permission est nécessaire avant chaque première utilisation du composant. Dans Chrome ou Edge, le partage audio d’un onglet reste disponible.
 2. Ouvrir de préférence Teams dans un onglet de ce navigateur.
 3. Choisir **Teams / cours en ligne · son partagé uniquement**.
-4. Cliquer sur **Enregistrer**, sélectionner l’onglet du cours et activer **Partager le son**.
+4. Cliquer sur **Enregistrer**. Dans Safari sur Mac, le composant natif capture directement le son du Mac. Dans Chrome ou Edge, sélectionner l’onglet du cours et activer **Partager le son**.
 5. L’enregistrement démarre directement. Le niveau sonore reste visible pendant le cours ; un test de six secondes reste disponible dans **Options audio**, sans être obligatoire.
 
 Ce mode n’ouvre pas le microphone. Le partage de son d’une application native, d’une fenêtre ou de tout le Mac dépend des possibilités du navigateur et de macOS : la présence d’un écran partagé ne prouve pas que son audio est disponible. Aucun contournement par le micro n’est appliqué si la source audio manque.
@@ -126,3 +126,14 @@ Un bilan détaillé des vérifications et limites est disponible dans `BILAN_VER
 La rédaction approfondie et sa relecture sont structurées en sections pédagogiques : le rapport interne de correction n’est pas présenté comme un chapitre. La matière et le niveau universitaire doivent être conservés ; la simplicité de lecture ne signifie pas remplacer le sujet par des conseils quotidiens.
 
 Les exemples numériques structurés séparent les données, les formules et l’interprétation. L’application évalue les opérations arithmétiques autorisées et calcule les résultats au lieu de reprendre un total rédigé par le modèle. Cela vérifie l’arithmétique, pas la pertinence du modèle choisi ni toutes les hypothèses de l’exemple. Un exemple numérique mal structuré est écarté.
+
+## Capture directe du son dans Safari
+
+Le code `native/SystemAudio.swift` utilise ScreenCaptureKit et n’enregistre que la sortie audio : aucune sortie vidéo ou microphone n’est enregistrée. La permission macOS reste plus large et doit être autorisée par l’utilisateur. Tous les sons du Mac sont inclus, y compris ceux d’autres applications ; ce n’est pas un filtre réservé à Teams.
+
+Le composant est compilé localement à partir des sources, avec les outils de développement Apple, et placé dans `native-build/`, exclu de Git. Le son est écrit sur le disque en WAV mono 48 kHz, avec mise à jour et synchronisation de l’en-tête chaque seconde. Pause/reprise et arrêt passent par le serveur local protégé. Une absence de nouvelles du navigateur pendant trois minutes demande l’arrêt. Les données déjà écrites restent récupérables.
+
+Les tests automatisés vérifient le parcours Safari simulé, les commandes, les sauvegardes et l’unicité de la capture. La compilation a été vérifiée sur ce Mac. Un test réel avec voix synthétique sur ce Mac a confirmé la présence du son et la sauvegarde. Une longue séance Teams reste à valider.
+
+
+Validation locale du 4 novembre : le tampon audio CoreMedia utilise maintenant la taille demandee par le systeme. Le test reel enregistre une voix synthetique jouee par le Mac, avec des echantillons non nuls en WAV mono 48 kHz. La sauvegarde apres arret est verifiee. Un cours Teams long reste a valider. La distribution du composant reste experimentale : les reconstructions avec signature ad hoc peuvent exiger de retirer puis reajouter StudyHUB Audio dans les autorisations macOS. Une signature et une notarisation Apple stables restent necessaires avant une distribution simple.

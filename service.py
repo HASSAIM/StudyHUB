@@ -6,7 +6,7 @@ def ready():
     try:
         with urllib.request.urlopen(URL+'health',timeout=1) as response:
             data=json.load(response)
-            return data.get('app')=='isc-cours-local' and data.get('version',0)>=5
+            return data.get('app')=='isc-cours-local' and data.get('version',0)>=6
     except Exception:return False
 
 def ensure_running():
